@@ -25,11 +25,11 @@ export function setup()
     scene.add( directionalLight );
     directionalLight.position.y = 300;
 
-    const light = new THREE.AmbientLight( 0xffffff );
+    const light = new THREE.AmbientLight( 0xffffff , .6 );
     scene.add( light );
 
     // scene.fog = new THREE.Fog(0x000000, 200, 1000); //linear fog
-    scene.fog = new THREE.FogExp2(0x000000, .001); //exp fog
+    // scene.fog = new THREE.FogExp2(0x000000, .001); //exp fog
 
     //camera initial setup
     camera.position.set(300, 200, 200);
