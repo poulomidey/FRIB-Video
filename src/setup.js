@@ -52,7 +52,7 @@ export function setup()
     const cameraGroup = new THREE.Group();
     // cameraGroup.position.set(-25,20,-50);  // Set the initial VR Headset Position.
     // cameraGroup.position.set(-150, 50, -100) //vr for Youtube
-    cameraGroup.position.set(-25, 25, 100)
+    cameraGroup.position.set(75, 50, 250);
     renderer.xr.addEventListener('sessionstart', function() {
         scene.add(cameraGroup);
         cameraGroup.add(camera);

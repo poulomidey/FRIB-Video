@@ -13,6 +13,9 @@ for(let i = 0; i < 3; i++)
     create_nucleus(nucleus, r, p, n);
     scene.add(nucleus);
 
+    const nucleus2 = new THREE.Group()
+    scene.add(nucleus2);
+
     const animation = new THREE.Group()
 
     // let wait_time = 5000 * i;
@@ -22,7 +25,7 @@ for(let i = 0; i < 3; i++)
     // console.log(wait_time);
     const wait_time = choose_wait_time(20000);
     create_foil(animation);
-    animations(animation, nucleus, r, p, n, wait_time);
+    animations(animation, nucleus, nucleus2, r, p, n, wait_time);
     scene.add(animation);
 }
 function animate() {
