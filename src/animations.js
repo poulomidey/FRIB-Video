@@ -91,8 +91,8 @@ function choose_pos(nucleus, nucleus2, flash, tot_time)
     nucleus.position.y = -1 * (150 - nucleus.userData.n_radius * 1.5) + Math.random() * 2 * (150 - nucleus.userData.n_radius * 1.5);
     nucleus.position.z = -1 * (150 - nucleus.userData.n_radius * 1.5) + Math.random() * 2 * (150 - nucleus.userData.n_radius * 1.5);
 
-    // nucleus2.position.y = nucleus.position.y;
-    // nucleus2.position.z = nucleus.position.z;
+    nucleus2.position.y = nucleus.position.y;
+    nucleus2.position.z = nucleus.position.z;
     // nucleus2.position.x = (1000/tot_time) * (.75 * tot_time); //1000 is the total distance the nuclei travel. .75 * tot_time is the time the nucleus travels before it breaks off
 
     flash.position.y = nucleus.position.y;
@@ -185,7 +185,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     // nucleus2.position.set(nucleus.position.x, nucleus.position.y, nucleus.position.z);
     // nucleus2.position.set(nucleus.position.x, nucleus.position.y, nucleus.position.z);
 
-    nucleus2.scale.set(0,0,0);
+    // nucleus2.scale.set(0,0,0);
     createjs.Tween.get(nucleus2.scale, {loop : true})
         .wait(wait_time + .75 * tot_time)
         .to({x : 1, y : 1, z : 1}, 0)
@@ -201,12 +201,14 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     const x = rho * Math.cos(phi);
     const y = rho * Math.sin(phi) * Math.cos(theta);
     const z = rho * Math.sin(phi) * Math.sin(theta);
+    const coeff = (1000/tot_time) * (.25 * tot_time);
     
     createjs.Tween.get(nucleus2.position, {loop : true})
         .wait(wait_time + .75 * tot_time)
         // .call(set_n2_pos, [nucleus, nucleus2])
-        .to({x : (1000/tot_time) * (.25 * tot_time), y : nucleus.position.y, z : nucleus.position.z}, 0)
+        // .to({x : (1000/tot_time) * (.25 * tot_time), y : nucleus.position.y, z : nucleus.position.z}, 0) //starting pos for the broken piece has wrong y and z vals. Vals of the y and z before the nucleus is moved to a new one.
+        .to({x : (1000/tot_time) * (.25 * tot_time)}, 0)
         .call(animate_nucleus, [nucleus2])
-        .to({x : 500, y : (500/x) * v.y, z : (500/x) * z}, .25 * tot_time);
+        .to({x : nucleus2.position.x + coeff * x, y : nucleus2.position.y + coeff * y, z : nucleus2.position.z + coeff * z}, .25 * tot_time);
         
 }
