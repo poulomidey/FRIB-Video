@@ -25,11 +25,11 @@ export function setup()
     scene.add( directionalLight );
     directionalLight.position.y = 300;
 
-    const light = new THREE.AmbientLight( 0xffffff );
+    const light = new THREE.AmbientLight( 0xffffff , .6 );
     scene.add( light );
 
     // scene.fog = new THREE.Fog(0x000000, 200, 1000); //linear fog
-    scene.fog = new THREE.FogExp2(0x000000, .001); //exp fog
+    // scene.fog = new THREE.FogExp2(0x000000, .001); //exp fog
 
     //camera initial setup
     camera.position.set(300, 200, 200);
@@ -52,7 +52,7 @@ export function setup()
     const cameraGroup = new THREE.Group();
     // cameraGroup.position.set(-25,20,-50);  // Set the initial VR Headset Position.
     // cameraGroup.position.set(-150, 50, -100) //vr for Youtube
-    cameraGroup.position.set(-25, 25, 100)
+    cameraGroup.position.set(75, 50, 250);
     renderer.xr.addEventListener('sessionstart', function() {
         scene.add(cameraGroup);
         cameraGroup.add(camera);
