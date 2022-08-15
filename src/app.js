@@ -1,5 +1,6 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/build/three.module.js';
 import {setup} from "./setup.js";
+
 import {create_nucleus, create_foil, animations, choose_wait_time} from "./animations.js";
 
 let {scene, camera, renderer, controls} = setup();
@@ -12,6 +13,7 @@ tube.rotation.z = Math.PI/2;
 const p = 50; //note that all the nuclei are the same size
 const n = 50;
 const r = 5;
+
 for(let i = 0; i < 3; i++)
 {
     const nucleus = new THREE.Group();

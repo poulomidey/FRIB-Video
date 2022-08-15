@@ -21,6 +21,7 @@ export function create_nucleus(nucleus, radius, proton, neutron)
     const n_radius = Math.cbrt(.75 * (1/Math.PI) * volume);
     nucleus.userData.n_radius = n_radius;
     // nucleus.add(new THREE.Mesh( new THREE.SphereGeometry(n_radius, 32, 16)));
+
     let nucleon;
     for(let i = 0; i < proton + neutron; i++)
     {
@@ -58,6 +59,7 @@ function animate_nucleus(nucleus)
         const ychange = rho * Math.sin(phi) * Math.sin(theta);
         const zchange = rho * Math.cos(phi);
         // const {xchange, ychange, zchange} = random_spherical_pos(1); //it's not working for some reason when I put in this line?? I have no idea why.
+
         const time = 25 + Math.random() * 25;
         createjs.Tween.get(nucleon.position, {loop : true})
             .to({x : nucleon.position.x + xchange, y : nucleon.position.y + ychange, z : nucleon.position.z + zchange}, time)
@@ -149,6 +151,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     const speed = 1000/tot_time;
 
     const object_time = (2 * nucleus.userData.n_radius)/speed;
+
     flash.scale.set(0,0,0);
     createjs.Tween.get(flash.scale, {loop: true})
         .wait(wait_time)
