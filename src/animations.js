@@ -116,7 +116,8 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     nucleus_group.add(nucleus2);
     console.log(nucleus_group);
 
-    nucleus_group.position.x = -500;
+    const tot_dist = 2000;
+    nucleus_group.position.x = -tot_dist/2;
     // const flash = new THREE.Mesh( new THREE.CylinderGeometry(dimensions.z/2 * 1.5, dimensions.z/2 * 1.5, 5.5, 32), new THREE.MeshBasicMaterial( { color : 0x7AF5FF}));
     const flash = new THREE.Mesh( new THREE.CylinderGeometry(nucleus.userData.n_radius * 1.5, nucleus.userData.n_radius * 1.5, 5.5, 32), new THREE.MeshBasicMaterial( { color : 0x7AF5FF}));
     flash.rotation.z = Math.PI/2;
@@ -125,6 +126,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     const tot_time = 20000;
 
     nucleus_group.scale.set(0,0,0);
+
     createjs.Tween.get(nucleus_group.scale, {loop : true})
         .wait(wait_time)
         .to({x : 1, y : 1, z : 1}, 0)
@@ -133,7 +135,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
 
     createjs.Tween.get(nucleus_group.position, {loop: true})
         .wait(wait_time)
-        .to({x: 500}, tot_time);
+        .to({x: tot_dist/2}, tot_time);
 
     createjs.Tween.get(nucleus, {loop :true}) //specific property you're calling here doesn't matter
         .call(choose_pos, [nucleus_group, flash])
@@ -169,3 +171,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     
     animation.add(nucleus_group);
 }
+
+// change to tween.js library
+// make randomly selecting the start time better
+// randomly select the time it breaks apart within a range
