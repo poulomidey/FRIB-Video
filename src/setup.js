@@ -40,7 +40,7 @@ export function setup()
     const size = 1000;
     const divisions = 50;
     const gridHelper = new THREE.GridHelper( size, divisions );
-    scene.add( gridHelper );
+    // scene.add( gridHelper );
 
     //axis
     // const axesHelper = new THREE.AxesHelper( 600 );

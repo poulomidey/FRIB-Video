@@ -4,6 +4,11 @@ import {create_nucleus, create_foil, animations, choose_wait_time} from "./anima
 
 let {scene, camera, renderer, controls} = setup();
 
+//length of tube should be the same as the total distance
+const tube = new THREE.Mesh( new THREE.CylinderGeometry(300,300,2000,32,1,true, Math.PI/2, Math.PI), new THREE.MeshLambertMaterial( {color : 0xA600C8, side: THREE.DoubleSide}));
+scene.add(tube);
+tube.rotation.z = Math.PI/2;
+
 const p = 50; //note that all the nuclei are the same size
 const n = 50;
 const r = 5;
@@ -28,6 +33,7 @@ for(let i = 0; i < 3; i++)
     animations(animation, nucleus, nucleus2, r, p, n, wait_time);
     scene.add(animation);
 }
+
 function animate() {
     renderer.render(scene, camera);
     renderer.setAnimationLoop(animate);
