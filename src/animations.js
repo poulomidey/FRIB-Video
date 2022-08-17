@@ -126,6 +126,13 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
     const tot_time = 20000;
 
     nucleus_group.scale.set(0,0,0);
+    // new TWEEN.Tween(nucleus_group.scale)
+    //     .delay(wait_time)
+    //     .to({x: 1, y: 1, z: 1}, 0)
+    //     .delay(tot_time)
+    //     .to({x: 0, y: 0, z: 0}, 0)
+    //     .repeat(Infinity)
+    //     .start();
 
     createjs.Tween.get(nucleus_group.scale, {loop : true})
         .wait(wait_time)
@@ -133,41 +140,93 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
         .wait(tot_time)
         .to({x : 0, y : 0, z : 0}, 0);
 
-    createjs.Tween.get(nucleus_group.position, {loop: true})
-        .wait(wait_time)
-        .to({x: tot_dist/2}, tot_time);
+    new TWEEN.Tween(nucleus_group.position)
+        .delay(wait_time)
+        .to({x: tot_dist/2}, tot_time)
+        .repeat(Infinity)
+        .start();
 
-    createjs.Tween.get(nucleus, {loop :true}) //specific property you're calling here doesn't matter
-        .call(choose_pos, [nucleus_group, flash])
-        .wait(wait_time)
-        .wait(tot_time/2)
-        .call(replace_nucleus, [nucleus, radius, proton, neutron, true])
-        .call(animate_nucleus, [nucleus])
-        .wait(tot_time/4)
-        .call(break_nucleus, [nucleus, nucleus2, radius, wait_time, tot_time])
-        .wait(tot_time/4)
-        .call(replace_nucleus, [nucleus, radius, proton, neutron, false]); //check that the values of proton and neutron don't change
+    // createjs.Tween.get(nucleus_group.position, {loop: true})
+    //     .wait(wait_time)
+    //     .to({x: tot_dist/2}, tot_time);
+
+
+
+    // createjs.Tween.get(nucleus, {loop :true}) //specific property you're calling here doesn't matter
+        // .call(choose_pos, [nucleus_group, flash])
+    //     .wait(wait_time)
+    //     .wait(tot_time/2)
+    //     .call(replace_nucleus, [nucleus, radius, proton, neutron, true])
+    //     .call(animate_nucleus, [nucleus])
+    //     .wait(tot_time/4)
+    //     .call(break_nucleus, [nucleus, nucleus2, radius, wait_time, tot_time])
+    //     .wait(tot_time/4)
+    //     .call(replace_nucleus, [nucleus, radius, proton, neutron, false]); //check that the values of proton and neutron don't change
+
+    new TWEEN.Tween(nucleus_group)
+        .onUpdate(function () {
+                choose_pos(nucleus_group, flash);
+            })
+        .delay(wait_time + tot_time/2)
+        .onUpdate(function () {
+                replace_nucleus(nucleus, radius, proton, neutron, true);
+                animate_nucleus(nucleus);
+            })
+        .delay(tot_time/4)
+        .onUpdate(function () {
+                break_nucleus(nucleus, nucleus2, radius, wait_time, tot_time);
+            })
+        .delay(tot_time/4)
+        .onUpdate(function () {
+                replace_nucleus(nucleus, radius, proton, neutron, false);
+            })
+        .repeat(Infinity)
+        .start();
 
     const speed = 1000/tot_time;
 
     const object_time = (2 * nucleus.userData.n_radius)/speed;
 
     flash.scale.set(0,0,0);
-    createjs.Tween.get(flash.scale, {loop: true})
-        .wait(wait_time)
-        .wait(tot_time/2 - object_time/2)
-        .to({x : 1, y : 1, z : 1}, 0)
-        .wait(object_time)
-        .to({x : 0, y : 0, z : 0}, 0)
-        .wait(tot_time - tot_time/2 - object_time/2); //TO DO: change this so that the flash grows to full size than decreases. Change easing so it's quadratic or something instead of linear?
+    new TWEEN.Tween(flash.scale)
+        .delay(wait_time + tot_time/2 - object_time/2)
+        .to({x: 1, y: 1, z: 1}, 0)
+        .delay(object_time)
+        .to({x: 0, y: 0, z: 0}, 0)
+        .delay(tot_time - tot_time/2 - object_time/2)
+        .repeat(Infinity)
+        .start();
+    // createjs.Tween.get(flash.scale, {loop: true})
+    //     .wait(wait_time)
+    //     .wait(tot_time/2 - object_time/2)
+    //     .to({x : 1, y : 1, z : 1}, 0)
+    //     .wait(object_time)
+    //     .to({x : 0, y : 0, z : 0}, 0)
+    //     .wait(tot_time - tot_time/2 - object_time/2); //TO DO: change this so that the flash grows to full size than decreases. Change easing so it's quadratic or something instead of linear?
 
     const v = random_spherical_pos(1);
     const coeff = (1000/tot_time) * (.25 * tot_time);
     
-    createjs.Tween.get(nucleus2.position, {loop : true})
-        .wait(wait_time + .75 * tot_time)
-        .call(animate_nucleus, [nucleus2])
-        .to({x : nucleus2.position.x + coeff * v.x, y : nucleus2.position.y + coeff * v.y, z : nucleus2.position.z + coeff * v.z}, .25 * tot_time);
+    new TWEEN.Tween(nucleus2.position)
+        .delay(wait_time + .75 * tot_time)
+        .to({x : nucleus2.position.x + coeff * v.x, y : nucleus2.position.y + coeff * v.y, z : nucleus2.position.z + coeff * v.z}, .25 * tot_time)
+        .repeat(Infinity)
+        .start();
+        
+    new TWEEN.Tween(nucleus2)
+        .delay(wait_time + .75 * tot_time)
+        .onUpdate(function (object) {
+                animate_nucleus(object);
+                // console.log(this.object);
+            })
+        .delay(.25 * tot_time)
+        .repeat(Infinity)
+        .start();
+
+    // createjs.Tween.get(nucleus2.position, {loop : true})
+    //     .wait(wait_time + .75 * tot_time)
+    //     .call(animate_nucleus, [nucleus2])
+    //     .to({x : nucleus2.position.x + coeff * v.x, y : nucleus2.position.y + coeff * v.y, z : nucleus2.position.z + coeff * v.z}, .25 * tot_time);
     
     animation.add(nucleus_group);
 }

@@ -39,6 +39,7 @@ for(let i = 0; i < 3; i++)
 function animate() {
     renderer.render(scene, camera);
     renderer.setAnimationLoop(animate);
+    TWEEN.update();
     // controls.update(.05); //flycontrols
 };
 animate();
