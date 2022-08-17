@@ -95,6 +95,12 @@ export function choose_wait_time(tot_time)
     return wait_time;
 }
 
+export function choose_break_time()
+{
+    let break_time = Math.random() * .25 + .125;
+    return break_time;
+}
+
 function break_nucleus(nucleus, nucleus2, radius) //could you just use the replace nucleus function instead of this new function
 {
 
@@ -109,7 +115,7 @@ function break_nucleus(nucleus, nucleus2, radius) //could you just use the repla
 }
 
 
-export function animations(animation, nucleus, nucleus2, radius, proton, neutron, wait_time)
+export function animations(animation, nucleus, nucleus2, radius, proton, neutron, wait_time, break_time)
 {
     const nucleus_group = new THREE.Group();
     nucleus_group.add(nucleus);
@@ -143,9 +149,9 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
         .wait(tot_time/2)
         .call(replace_nucleus, [nucleus, radius, proton, neutron, true])
         .call(animate_nucleus, [nucleus])
-        .wait(tot_time/4)
+        .wait(break_time * tot_time)
         .call(break_nucleus, [nucleus, nucleus2, radius, wait_time, tot_time])
-        .wait(tot_time/4)
+        .wait(tot_time/2 - break_time * tot_time)
         .call(replace_nucleus, [nucleus, radius, proton, neutron, false]); //check that the values of proton and neutron don't change
 
     const speed = 1000/tot_time;
@@ -162,7 +168,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
         .wait(tot_time - tot_time/2 - object_time/2); //TO DO: change this so that the flash grows to full size than decreases. Change easing so it's quadratic or something instead of linear?
 
     const v = random_spherical_pos(1);
-    const coeff = (1000/tot_time) * (.25 * tot_time);
+    const coeff = (1000/tot_time) * ((tot_time/2 - break_time * tot_time));
     
     createjs.Tween.get(nucleus2.position, {loop : true})
         .wait(wait_time + .75 * tot_time)
