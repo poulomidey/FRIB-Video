@@ -1,5 +1,4 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/build/three.module.js';
-import {random_num} from "./num.js";
 
 function random_spherical_pos(r)
 {
@@ -132,32 +131,27 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
 
     const tot_time = 20000;
 
-    const list = new random_num();
-    list.choose_wait_time(tot_time);
-    list.choose_break_time();
-
     nucleus_group.scale.set(0,0,0);
+
     createjs.Tween.get(nucleus_group.scale, {loop : true})
-        .wait(list.wait_time)
+        .wait(wait_time)
         .to({x : 1, y : 1, z : 1}, 0)
         .wait(tot_time)
         .to({x : 0, y : 0, z : 0}, 0);
 
     createjs.Tween.get(nucleus_group.position, {loop: true})
-        .wait(list.wait_time)
+        .wait(wait_time)
         .to({x: tot_dist/2}, tot_time);
 
     createjs.Tween.get(nucleus, {loop :true}) //specific property you're calling here doesn't matter
-        .call(list.choose_wait_time(tot_time))
-        .call(list.choose_break_time())
         .call(choose_pos, [nucleus_group, flash])
-        .wait(list.wait_time)
+        .wait(wait_time)
         .wait(tot_time/2)
         .call(replace_nucleus, [nucleus, radius, proton, neutron, true])
         .call(animate_nucleus, [nucleus])
-        .wait(list.break_time * tot_time)
-        .call(break_nucleus, [nucleus, nucleus2, radius])
-        .wait(tot_time/2 - list.break_time * tot_time)
+        .wait(break_time * tot_time)
+        .call(break_nucleus, [nucleus, nucleus2, radius, wait_time, tot_time])
+        .wait(tot_time/2 - break_time * tot_time)
         .call(replace_nucleus, [nucleus, radius, proton, neutron, false]); //check that the values of proton and neutron don't change
 
     const speed = 1000/tot_time;
@@ -166,7 +160,7 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
 
     flash.scale.set(0,0,0);
     createjs.Tween.get(flash.scale, {loop: true})
-        .wait(list.wait_time)
+        .wait(wait_time)
         .wait(tot_time/2 - object_time/2)
         .to({x : 1, y : 1, z : 1}, 0)
         .wait(object_time)
@@ -174,10 +168,10 @@ export function animations(animation, nucleus, nucleus2, radius, proton, neutron
         .wait(tot_time - tot_time/2 - object_time/2); //TO DO: change this so that the flash grows to full size than decreases. Change easing so it's quadratic or something instead of linear?
 
     const v = random_spherical_pos(1);
-    const coeff = (1000/tot_time) * ((tot_time/2 - list.break_time * tot_time));
+    const coeff = (1000/tot_time) * ((tot_time/2 - break_time * tot_time));
     
     createjs.Tween.get(nucleus2.position, {loop : true})
-        .wait(list.wait_time + .75 * tot_time)
+        .wait(wait_time + .75 * tot_time)
         .call(animate_nucleus, [nucleus2])
         .to({x : nucleus2.position.x + coeff * v.x, y : nucleus2.position.y + coeff * v.y, z : nucleus2.position.z + coeff * v.z}, .25 * tot_time);
     
