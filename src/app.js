@@ -6,7 +6,9 @@ import {create_nucleus, create_foil, animations, choose_wait_time, choose_break_
 let {scene, camera, renderer, controls} = setup();
 
 //length of tube should be the same as the total distance
-const tube = new THREE.Mesh( new THREE.CylinderGeometry(300,300,2000,32,1,true, Math.PI/2, Math.PI), new THREE.MeshLambertMaterial( {color : 0xA600C8, side: THREE.DoubleSide}));
+const loader = new THREE.TextureLoader();
+// const tube = new THREE.Mesh( new THREE.CylinderGeometry(300,300,2000,32,1,true, Math.PI/2, Math.PI), new THREE.MeshLambertMaterial( {color : 0xA600C8, side: THREE.DoubleSide}));
+const tube = new THREE.Mesh( new THREE.CylinderGeometry(300,300,2000,32,1,true, Math.PI/2, Math.PI), new THREE.MeshLambertMaterial( {map: loader.load('src/images/metaldark.jpg'), side: THREE.DoubleSide}));
 scene.add(tube);
 tube.rotation.z = Math.PI/2;
 

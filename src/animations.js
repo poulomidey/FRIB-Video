@@ -43,7 +43,9 @@ export function create_nucleus(nucleus, radius, proton, neutron)
 
 export function create_foil(animation)
 {
-    const foil = new THREE.Mesh( new THREE.BoxGeometry(5, 300, 300), new THREE.MeshLambertMaterial({color : 0xC3C3C1}));
+    const loader = new THREE.TextureLoader();
+    // const foil = new THREE.Mesh( new THREE.BoxGeometry(5, 300, 300), new THREE.MeshLambertMaterial({color : 0xC3C3C1}));
+    const foil = new THREE.Mesh( new THREE.BoxGeometry(5, 300, 300), new THREE.MeshLambertMaterial({map: loader.load('src/images/foil.jpg')}));
     animation.add(foil);
 
     //maybe to make a new one it can call a function?? how do you get it work not on a loop. Maybe have five ones on a loop?
